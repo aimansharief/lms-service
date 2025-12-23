@@ -1,9 +1,12 @@
-FROM sunbird/openjdk-java11-alpine:latest
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache unzip curl \
-    && adduser -u 1001 -h /home/sunbird/ -D sunbird \
-    && mkdir -p /home/sunbird/lms
+FROM --platform=linux/x86_64 eclipse-temurin:11.0.20.1_1-jdk-focal
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y unzip curl \
+    && adduser --uid 1001 --home /home/sunbird/ --disabled-login sunbird \
+    && mkdir -p /home/sunbird \
+    && chown -R sunbird:sunbird /home/sunbird \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 #ENV sunbird_learnerstate_actor_host 52.172.24.203
 #ENV sunbird_learnerstate_actor_port 8088 
 RUN chown -R sunbird:sunbird /home/sunbird
